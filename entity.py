@@ -31,7 +31,7 @@ class Entity(object):
                 return True
         return False
 
-    def directionMethod(self, directions):
+    def directionMethod_(self, directions):
         distances = []
         for direction in directions:
             vec = self.node.position  + self.directions[direction]*TILEWIDTH - self.goal
@@ -72,14 +72,14 @@ class Entity(object):
         if self.visible:
             p = self.position.asInt()
             pygame.draw.circle(screen, self.color, p, self.radius)
-            
+
     def update(self, dt):
         self.position += self.directions[self.direction]*self.speed*dt
         if self.overshotTarget():
             self.node = self.target
             directions = self.validDirections()
             #direction = self.randomDirection(directions)   
-            direction = self.directionMethod(directions)
+            direction = self.directionMethod_(directions)
             if not self.disablePortal:
                 if self.node.neighbors[PORTAL] is not None:
                     self.node = self.node.neighbors[PORTAL]
