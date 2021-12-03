@@ -2,8 +2,14 @@ import pygame
 from vector import Vector2
 from constants import *
 import numpy as np
+pygame.font.init()
+font = pygame.font.SysFont("courier new",30)
+id = 0
 class Node(object):
     def __init__(self,x,y):
+            global id
+            self.id = id
+            id += 1
             self.position = Vector2(x,y)
             self.neighbors = {UP:None, DOWN: None, LEFT: None, RIGHT: None, PORTAL : None}
     def render(self,screen):
@@ -13,6 +19,8 @@ class Node(object):
                 line_end = self.neighbors[n].position.asTuple()
                 pygame.draw.line(screen, WHITE, line_start, line_end, 4)
                 pygame.draw.circle(screen, RED, self.position.asInt(), 12)
+                id = font.render(f"{self.id}",1,YELLOW)
+                screen.blit(id,(self.position.asInt()))
 
 class NodeGroup(object):
     def __init__(self,level):
@@ -24,7 +32,8 @@ class NodeGroup(object):
         self.createNodeTable(data)
         self.connectHorizontally(data)
         self.connectVertically(data)
-    
+    def getNodesLUT(self):
+            return self.nodesLUT
     def readMazeFile(self, textfile):
         return np.loadtxt(textfile, dtype='<U1')
     
